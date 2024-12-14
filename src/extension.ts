@@ -1,11 +1,26 @@
 import * as vscode from 'vscode';
-import { watchFolder } from './code';
-
+import { watchFolder,lintCode } from './code';
+import { MicrophonesController } from './MicrophonesController';
 let currentWatcher: vscode.FileSystemWatcher;
 
 export function activate(context: vscode.ExtensionContext) {
-	console.log('Congratulations, your extension "katarilab" is now active!');
-	const disposable = vscode.commands.registerCommand('katarilab.copilot', async () => {
+	console.log('Congratulations, your extension "katarilab" is now active!');	
+
+	let microphoneController = new MicrophonesController();	
+    let keyDownDisposable = vscode.commands.registerCommand('katariExtension.keyDown', () => {
+        microphoneController.onKeyDown();
+    });    
+	
+	const disposableLintCode = vscode.commands.registerCommand('katarilab.lint_code', async () => {				
+		await lintCode();
+	});
+	const disposableDisableCode = vscode.commands.registerCommand('katarilab.disable_code', async () => {
+		if (currentWatcher) {
+			vscode.window.showInformationMessage(`Disable Monitor!`);
+			currentWatcher.dispose();
+		}
+	});
+	const disposableEnableCode = vscode.commands.registerCommand('katarilab.enable_code', async () => {
 		const workspaceFolders = vscode.workspace.workspaceFolders;
 		if (!workspaceFolders) {
 			vscode.window.showWarningMessage('No folder path was provided.');
@@ -26,12 +41,13 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 		currentWatcher = await watchFolder(folderPath);
 		context.subscriptions.push(currentWatcher);
-	});
-	setTimeout(() => {
-		vscode.commands.executeCommand('workbench.action.closeMessages');
-	}, 5000); // Automatically close the message after 3 seconds
+	});	
 
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(disposableEnableCode);
+	context.subscriptions.push(disposableDisableCode);
+	context.subscriptions.push(disposableLintCode);
+	context.subscriptions.push(microphoneController);
+    context.subscriptions.push(keyDownDisposable);    
 }
 
 // This method is called when your extension is deactivated

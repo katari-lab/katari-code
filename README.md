@@ -20,3 +20,7 @@ For example if there is an image subfolder under your extension project workspac
 - vsce package
 - code --install-extension katarilab-0.0.1.vsix
 - code --uninstall-extension katarilab-0.0.1.vsix
+
+# clean
+- npm install -g typescript
+- npm cache clean --force

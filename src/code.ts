@@ -3,6 +3,32 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import { katariCallCode } from './katari';
 
+export async function lintCode(){        
+    
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+        vscode.window.showErrorMessage('No active editor found!');
+        return;
+    }
+    const document = editor.document;
+    vscode.window.showInformationMessage(`Linting code for ${document.fileName}`);
+    try {            
+        const content = document.getText();                    
+        const modifiedContent = await katariCallCode(content);
+        if (modifiedContent){
+            await editor.edit(editBuilder => {
+                const start = new vscode.Position(0, 0);
+                const end = new vscode.Position(document.lineCount, 0);					
+                editBuilder.replace(new vscode.Range(start, end), modifiedContent);					
+            });
+        }            
+        vscode.window.showInformationMessage(`Linting completed for ${document.fileName}`);
+    } catch (error) {
+        vscode.window.showErrorMessage(`Failed to modify file: ${error}`);
+        console.error(error);
+    }
+    return 0;
+}
 export async function createDocumentInFolder(folderPath: string, fileName: string, content: string) {
     try {        
         await fs.mkdir(folderPath, { recursive: true });        
@@ -34,7 +60,7 @@ export async function watchFolder(folderPath: string) {
                 const start = new vscode.Position(0, 0);
                 const end = new vscode.Position(document.lineCount, 0);
                 const fullRange = new vscode.Range(start, end);
-                editBuilder.replace(fullRange, content ?? "api code was not ok");
+                editBuilder.replace(fullRange, content ?? "api call code was not ok");
             });
 
         } catch (error) {

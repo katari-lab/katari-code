@@ -19,8 +19,34 @@
   "contributes": {
     "commands": [
       {
-        "command": "katarilab.copilot",
-        "title": "katarilab copilot"
+        "command": "katarilab.enable_code",
+        "title": "katarilab enable code"
+      },
+      {
+        "command": "katarilab.disable_code",
+        "title": "katarilab disable code"
+      },
+      {
+        "command": "katarilab.lint_code",
+        "title": "katarilab lint code"
+      },
+      {
+        "command": "katariExtension.keyDown",
+        "title": "katariExtension.keyDown"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "katarilab.lint_code",
+        "key": "ctrl+shift+k ctrl+l",
+        "mac": "cmd+shift+k cmd+l",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "katariExtension.keyDown",
+        "key": "ctrl+alt+m",
+        "mac": "cmd+alt+m",
+        "when": "editorTextFocus"
       }
     ]
   },
@@ -39,16 +65,23 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.95.0",
+    "@types/axios": "^0.14.4",
     "@types/mocha": "^10.0.10",
-    "@types/node": "20.x",
+    "@types/node": "^20.17.10",
+    "@types/vscode": "^1.95.0",
+    "@types/web": "^0.0.187",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
-    "eslint": "^9.16.0",
-    "esbuild": "^0.24.0",
-    "npm-run-all": "^4.1.5",
-    "typescript": "^5.7.2",
     "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1"
+    "@vscode/test-electron": "^2.4.1",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.16.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "mic": "^2.1.2",
+    "node-record-lpcm16": "^1.0.0"
   }
 }

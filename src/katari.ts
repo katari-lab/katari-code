@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 
 export async function katariCallCode(data: string) {
+    const timeout = (ms: number) => new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout after " + ms + " ms")), ms));
     try {
         const response = await fetch("http://0.0.0.0:8000/code", {
             method: 'POST',

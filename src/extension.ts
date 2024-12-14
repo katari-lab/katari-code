@@ -1,17 +1,20 @@
 import * as vscode from 'vscode';
-import { watchFolder,lintCode } from './code';
+import { watchFolder, lintCode } from './code';
 import { MicrophonesController } from './MicrophonesController';
 let currentWatcher: vscode.FileSystemWatcher;
 
 export function activate(context: vscode.ExtensionContext) {
-	console.log('Congratulations, your extension "katarilab" is now active!');	
+	console.log('Congratulations, your extension "katarilab" is now active!');
 
-	let microphoneController = new MicrophonesController();	
-    let keyDownDisposable = vscode.commands.registerCommand('katariExtension.keyDown', () => {
-        microphoneController.onKeyDown();
-    });    
-	
-	const disposableLintCode = vscode.commands.registerCommand('katarilab.lint_code', async () => {				
+	let microphoneController = new MicrophonesController();
+	let terminalTranscriptDisposable = vscode.commands.registerCommand('katarilab.command_terminal_transcript', () => {
+		microphoneController.onTerminal();
+	});
+	let editorTranscriptDisposable = vscode.commands.registerCommand('katarilab.command_editor_transcript', () => {
+		microphoneController.onTextEditor();
+	});
+
+	const disposableLintCode = vscode.commands.registerCommand('katarilab.lint_code', async () => {
 		await lintCode();
 	});
 	const disposableDisableCode = vscode.commands.registerCommand('katarilab.disable_code', async () => {
@@ -41,13 +44,14 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 		currentWatcher = await watchFolder(folderPath);
 		context.subscriptions.push(currentWatcher);
-	});	
+	});
 
 	context.subscriptions.push(disposableEnableCode);
 	context.subscriptions.push(disposableDisableCode);
 	context.subscriptions.push(disposableLintCode);
 	context.subscriptions.push(microphoneController);
-    context.subscriptions.push(keyDownDisposable);    
+	context.subscriptions.push(terminalTranscriptDisposable);
+	context.subscriptions.push(editorTranscriptDisposable);
 }
 
 // This method is called when your extension is deactivated

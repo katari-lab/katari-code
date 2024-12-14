@@ -31,8 +31,12 @@
         "title": "katarilab lint code"
       },
       {
-        "command": "katariExtension.keyDown",
-        "title": "katariExtension.keyDown"
+        "command": "katarilab.command_editor_transcript",
+        "title": "katarilab.command_editor_transcript"
+      },
+      {
+        "command": "katarilab.command_terminal_transcript",
+        "title": "katarilab.command_terminal_transcript"
       }
     ],
     "keybindings": [
@@ -43,10 +47,16 @@
         "when": "editorTextFocus"
       },
       {
-        "command": "katariExtension.keyDown",
+        "command": "katarilab.command_editor_transcript",
         "key": "ctrl+alt+m",
         "mac": "cmd+alt+m",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "katarilab.command_terminal_transcript",
+        "key": "ctrl+k ctrl+m",
+        "mac": "cmd+m cmd+m",
+        "when": "terminalFocus"
       }
     ]
   },

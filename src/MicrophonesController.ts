@@ -80,7 +80,7 @@ export class MicrophonesController {
         micInstance.start();        
     }
 
-    public onTerminal() {                
+    public async onTerminal() {                
         let terminal = vscode.window.activeTerminal;
         if (!terminal) {
             return;
@@ -91,7 +91,7 @@ export class MicrophonesController {
             this._startRecording(true);
         }
     }
-    public onTextEditor(){
+    public async onTextEditor(){
         let editor = vscode.window.activeTextEditor;
         if (!editor) {
             return;

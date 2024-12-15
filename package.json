@@ -37,9 +37,19 @@
       {
         "command": "katarilab.command_terminal_transcript",
         "title": "katarilab.command_terminal_transcript"
+      },
+      {
+        "command": "katarilab.command_generate_test",
+        "title": "katarilab.command_generate_test"
       }
     ],
     "keybindings": [
+      {
+        "command": "katarilab.command_generate_test",
+        "key": "ctrl+shift+k ctrl+t",
+        "mac": "cmd+shift+k cmd+t",
+        "when": "editorTextFocus"
+      },
       {
         "command": "katarilab.lint_code",
         "key": "ctrl+shift+k ctrl+l",

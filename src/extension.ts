@@ -1,22 +1,31 @@
 import * as vscode from 'vscode';
 import { watchFolder, lintCode } from './code';
 import { MicrophonesController } from './MicrophonesController';
+import { CodeController } from './CodeController';
+import { TestingController } from './TestingController';
 let currentWatcher: vscode.FileSystemWatcher;
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "katarilab" is now active!');
 
-	let microphoneController = new MicrophonesController();
-	let terminalTranscriptDisposable = vscode.commands.registerCommand('katarilab.command_terminal_transcript', () => {
-		microphoneController.onTerminal();
+	const microphoneController = new MicrophonesController();
+	const codeController = new CodeController();
+	const testingController = new TestingController();
+
+	let terminalTranscriptDisposable = vscode.commands.registerCommand('katarilab.command_terminal_transcript', async () => {
+		await microphoneController.onTerminal();
 	});
-	let editorTranscriptDisposable = vscode.commands.registerCommand('katarilab.command_editor_transcript', () => {
-		microphoneController.onTextEditor();
+	let editorTranscriptDisposable = vscode.commands.registerCommand('katarilab.command_editor_transcript', async () => {
+		await microphoneController.onTextEditor();
 	});
+	let disposableTestingCode = vscode.commands.registerCommand('katarilab.command_generate_test', async () => {
+		await testingController.generateTest();
+	});	
 
 	const disposableLintCode = vscode.commands.registerCommand('katarilab.lint_code', async () => {
-		await lintCode();
+		await codeController.lintCode();		
 	});
+
 	const disposableDisableCode = vscode.commands.registerCommand('katarilab.disable_code', async () => {
 		if (currentWatcher) {
 			vscode.window.showInformationMessage(`Disable Monitor!`);
@@ -45,13 +54,16 @@ export function activate(context: vscode.ExtensionContext) {
 		currentWatcher = await watchFolder(folderPath);
 		context.subscriptions.push(currentWatcher);
 	});
-
+	context.subscriptions.push(disposableTestingCode);
 	context.subscriptions.push(disposableEnableCode);
 	context.subscriptions.push(disposableDisableCode);
 	context.subscriptions.push(disposableLintCode);
-	context.subscriptions.push(microphoneController);
 	context.subscriptions.push(terminalTranscriptDisposable);
 	context.subscriptions.push(editorTranscriptDisposable);
+	context.subscriptions.push(microphoneController);
+	context.subscriptions.push(testingController);
+	context.subscriptions.push(codeController);
+	
 }
 
 // This method is called when your extension is deactivated

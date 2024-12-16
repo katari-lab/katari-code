@@ -85,7 +85,6 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.4",
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.17.10",
     "@types/vscode": "^1.95.0",

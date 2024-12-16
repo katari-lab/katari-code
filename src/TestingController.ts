@@ -23,7 +23,7 @@ export class TestingController {
                 fs.mkdirSync(folderPath, { recursive: true }); // Ensure parent directories are created
             }
         } catch (error) {
-            vscode.window.showErrorMessage(`Error creating folder: ${folderPath}. Details: ${error.message}`);
+            vscode.window.showErrorMessage(`Error creating folder: ${folderPath}. Details: ${error}`);
         }
     }
     private _ensureFileExists(filePath: string) {
